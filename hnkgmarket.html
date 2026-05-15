@@ -3,28 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HNKG MARKET</title>
+    <title>HNKG MARKET - TOP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #0d0d1a; color: white; margin: 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
+        body { background: #0d0d1a; color: white; font-family: 'Inter', sans-serif; margin: 0; }
         .bg-grid {
-            background-image: 
-                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px),
-                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
+            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .text-gradient {
+            background: linear-gradient(180deg, #FFFFFF 30%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
-<body class="bg-grid min-h-screen flex flex-col items-center justify-center px-4">
-    <div class="max-w-lg w-full text-center">
-        <h1 class="text-6xl font-black tracking-tighter uppercase mb-2 leading-none"
-            style="background: linear-gradient(180deg, #fff 30%, #c084fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-            HNKG<br>MARKET
-        </h1>
-        <p class="text-gray-400 text-sm tracking-[0.2em] mb-12">ファンパレ・バウンティ 垢販売</p>
+<body class="bg-grid min-h-screen flex flex-col items-center justify-center px-6">
+    <div class="max-w-md w-full text-center space-y-12">
+        <div class="space-y-2">
+            <h1 class="text-7xl font-black tracking-tighter leading-[0.9] text-gradient uppercase">
+                HNKG<br>MARKET
+            </h1>
+            <p class="text-gray-500 text-[10px] tracking-[0.4em] font-bold uppercase">ファンパレ・バウンティ 垢販売</p>
+        </div>
+
+        <div class="flex justify-center opacity-20">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        </div>
 
         <a href="dashboard.html" 
-           class="block w-full py-5 rounded-2xl font-bold text-xl tracking-widest text-white transition-transform active:scale-95 shadow-lg"
+           class="block w-full py-5 rounded-2xl font-black text-xl tracking-widest text-center shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-transform active:scale-95"
            style="background: linear-gradient(90deg, #7c3aed, #ec4899);">
             在庫を見る
         </a>
