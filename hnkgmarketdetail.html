@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HNKG MARKET - 在庫一覧</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { background: #0d0d1a; color: white; font-family: sans-serif; }
+        .bg-grid {
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px),
+                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
+        }
+    </style>
+</head>
+<body class="bg-grid min-h-screen">
+    <div class="max-w-md mx-auto px-4 py-8">
+        
+        <div class="mb-6">
+            <h1 class="text-3xl font-black tracking-tighter italic">ファンパレ MARKET</h1>
+            <p class="text-gray-400 text-xs tracking-widest">ファンパレ・バウンティ 垢販売</p>
+        </div>
+
+        <div class="flex gap-2 mb-6">
+            <button class="px-6 py-2 rounded-full text-sm font-bold bg-purple-900/40 border border-purple-500 text-purple-200">ファンパレ</button>
+            <button class="px-6 py-2 rounded-full text-sm font-bold bg-white/5 border border-gray-700 text-gray-400">バウンティ</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mb-8">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                <p class="text-[10px] text-gray-500 font-bold tracking-widest">LIVE STOCK</p>
+                <p class="text-3xl font-black">18</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                <p class="text-[10px] text-gray-500 font-bold tracking-widest">ONLINE USERS</p>
+                <p class="text-3xl font-black">10</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                <p class="text-[10px] text-gray-500 font-bold tracking-widest">TOTAL SALES</p>
+                <p class="text-3xl font-black">142+</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+                <p class="text-[10px] text-gray-500 font-bold tracking-widest">SATISFACTION</p>
+                <p class="text-3xl font-black text-yellow-400">98<span class="text-sm">★</span></p>
+            </div>
+        </div>
+
+        <div class="mb-4 flex justify-between items-end">
+            <h2 class="text-2xl font-black tracking-tighter">ファンパレ ACCOUNT</h2>
+            <div class="text-[10px] bg-white/10 px-2 py-1 rounded border border-white/20 text-gray-300">価格: 高い順 ▾</div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mb-4">
+            <span class="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] text-gray-300">スターター</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] text-gray-300">フェス多数</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] text-gray-300">五条完凸</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] text-gray-300">引退垢</span>
+        </div>
+
+        <div class="flex gap-2 mb-8 overflow-x-auto pb-2">
+            <button class="px-4 py-1.5 rounded-full bg-pink-500/20 border border-pink-500 text-pink-400 text-xs font-bold">すべて</button>
+            <button class="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-400 text-xs font-bold">¥15,000</button>
+            <button class="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-400 text-xs font-bold">¥8,000</button>
+            <button class="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-400 text-xs font-bold">¥3,000</button>
+        </div>
+
+        <div class="space-y-4 mb-10">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
+                <div class="flex justify-between mb-3 text-[10px] font-bold uppercase tracking-widest">
+                    <span class="text-green-400 px-2 py-0.5 rounded border border-green-400/50 bg-green-400/10">READY</span>
+                    <span class="text-gray-500">在庫: 1</span>
+                </div>
+                <h3 class="text-lg font-black mb-2">ファンパレ垢 ¥15000</h3>
+                <div class="flex gap-2 mb-4">
+                    <span class="text-[9px] bg-white/10 px-2 py-0.5 rounded text-gray-400">超フェス大量垢</span>
+                    <span class="text-[9px] bg-white/10 px-2 py-0.5 rounded text-gray-400">限定多数</span>
+                </div>
+                <p class="text-4xl font-black italic">¥15,000</p>
+                <button class="w-full mt-4 py-3 rounded-xl font-bold bg-gradient-to-r from-purple-600 to-pink-500">DMで購入</button>
+            </div>
+        </div>
+
+        <h2 class="text-xl font-black tracking-tighter mb-4 uppercase text-gray-400">Live Logs</h2>
+        <div class="space-y-2">
+            <div class="bg-white/5 p-3 rounded-xl border border-white/5 text-[11px] flex gap-2">
+                <span class="text-green-400 font-bold">[SUCCESS]</span>
+                <span class="text-gray-300">超フェス大量垢 sold.</span>
+            </div>
+            <div class="bg-white/5 p-3 rounded-xl border border-white/5 text-[11px] flex gap-2">
+                <span class="text-yellow-400 font-bold">[UPDATE]</span>
+                <span class="text-gray-300">新規プレミアムアカウント追加。</span>
+            </div>
+        </div>
+
+        <a href="index.html" class="block text-center mt-10 text-xs text-gray-600 underline uppercase tracking-widest">Back to top</a>
+    </div>
+</body>
+</html>
