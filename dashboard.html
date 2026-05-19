@@ -94,6 +94,44 @@
     width:100%;
     height:100%;
 }
+
+.tag{
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 10px;
+    font-weight: 900;
+
+    background: rgba(168,85,247,0.12);
+    border: 1px solid rgba(168,85,247,0.35);
+
+    color: #d8b4fe;
+}
+
+.tag-button{
+    padding: 8px 14px;
+    border-radius: 9999px;
+
+    background: rgba(255,255,255,0.04);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    font-size: 11px;
+    font-weight: 900;
+
+    color: #d1d5db;
+}
+
+.detail-box{
+    max-height: 0;
+    overflow: hidden;
+
+    transition: all 0.4s ease;
+}
+
+.detail-box.active{
+    max-height: 500px;
+    margin-top: 16px;
+}
     </style>
 </head>
 <body class="bg-grid">
@@ -148,8 +186,157 @@
     <h2 class="text-2xl font-black tracking-tighter italic uppercase">
         ファンパレ アカウント
     </h2>
+    
+    <div class="flex gap-2 overflow-x-auto pb-2">
 
-    <div class="item-card shadow-[0_0_20px_rgba(168,85,247,0.1)]">
+    <button class="tag-button" onclick="filterItems('all')">
+        全て
+    </button>
+
+    <button class="tag-button" onclick="filterItems('最強')">
+        最強
+    </button>
+
+    <button class="tag-button" onclick="filterItems('初心者')">
+        初心者おすすめ
+    </button>
+
+    <button class="tag-button" onclick="filterItems('0.2秒五条')">
+        0.2秒五条
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('覚醒五条')">
+        覚醒五条
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('領域五条')">
+        領域五条
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('幻虎杖')">
+        幻虎杖
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('ゾーン虎杖')">
+        ゾーン虎杖
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('学生家入')">
+        学生家入
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('行家入')">
+        行家入
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('脹相')">
+        脹相
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('脱兎伏黒')">
+        脱兎伏黒
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('幻真人')">
+        幻真人
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('フーガ宿儺')">
+        フーガ宿儺
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('影宿儺')">
+        影宿儺
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('影乙骨')">
+        影乙骨
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('幻乙骨')">
+        幻乙骨
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('執行人乙骨')">
+        執行人乙骨
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('学生七海')">
+        学生七海
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('夜東堂')">
+        夜東堂
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('影夏油')">
+        影夏油
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('幻夏油')">
+        幻夏油
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('ミゲル')">
+        ミゲル
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('行裏梅')">
+        行裏梅
+    </button>
+
+</div>
+
+<button class="tag-button" onclick="filterItems('行日下部')">
+        行日下部
+    </button>
+
+</div>
+
+    <div
+class="item-card shadow-[0_0_20px_rgba(168,85,247,0.1)] item"
+data-tag="初心者おすすめ 幻乙骨 影乙骨 執行人乙骨 幻夏油 影宿儺 脱兎伏黒"
+onclick="toggleDetail(this)">
 
         <div class="video-container">
             <iframe
@@ -169,18 +356,78 @@
                     Stock: 1
                 </span>
             </div>
+            
+            <div class="flex gap-2 flex-wrap">
+
+    <span class="tag">
+        初心者おすすめ
+    </span>
+
+    <span class="tag">
+        幻乙骨
+    </span>
+    
+    <span class="tag">
+        影乙骨
+    </span>
+    
+    <span class="tag">
+        執行人乙骨
+    </span>
+    
+    <span class="tag">
+        幻夏油
+    </span>
+    
+    <span class="tag">
+        影宿儺
+    </span>
+    
+    <span class="tag">
+        脱兎伏黒
+    </span>
+
+</div>
 
             <h3 class="text-lg font-black text-gray-200 mb-1">
                 乙骨コンプ垢
             </h3>
 
             <p class="text-4xl font-black italic">
-                1400yen
+                1200yen
             </p>
+            
+            <div class="detail-box">
+
+    <div class="pt-4 border-t border-white/10 space-y-2">
+
+        <p class="text-sm text-gray-300 font-bold">
+            ・乙骨コンプ
+        </p>
+
+        <p class="text-sm text-gray-300 font-bold">
+            ･初心者の方やサブ垢向け
+        </p>
+
+        <p class="text-sm text-gray-300 font-bold">
+            ・ストーリー進行済み
+        </p>
+
+        <button class="w-full py-3 rounded-xl bg-purple-600 font-black mt-2">
+            購入希望の方はこちらをタップ
+        </button>
+
+    </div>
+
+</div>
+            
         </div>
     </div>
 
-<div class="item-card shadow-[0_0_20px_rgba(168,85,247,0.1)]">
+<div
+class="item-card shadow-[0_0_20px_rgba(168,85,247,0.1)] item"
+data-tag="完凸 0.2秒五条 領域五条 覚醒五条 フーガ宿儺 幻真人"
+onclick="toggleDetail(this)">
 
         <div class="video-container">
             <iframe
@@ -200,14 +447,74 @@
                     Stock: 1
                 </span>
             </div>
+            
+            <div class="flex gap-2 flex-wrap">
+
+    <span class="tag">
+        完凸
+    </span>
+
+    <span class="tag">
+        0.2秒五条
+    </span>
+    
+    <span class="tag">
+        領域五条
+    </span>
+    
+    <span class="tag">
+        覚醒五条
+    </span>
+    
+    <span class="tag">
+        フーガ宿儺
+    </span>
+    
+    <span class="tag">
+        幻真人
+    </span>
+
+</div>
 
             <h3 class="text-lg font-black text-gray-200 mb-1">
                 0.2秒五条完凸垢
             </h3>
 
             <p class="text-4xl font-black italic">
-                10000yen
+                9500yen
             </p>
+            
+            <div class="detail-box">
+
+    <div class="pt-4 border-t border-white/10 space-y-2">
+
+        <p class="text-sm text-gray-300 font-bold">
+            ・0.2秒五条完凸🔥
+        </p>
+
+        <p class="text-sm text-gray-300 font-bold">
+            ・フーガ宿儺･領域五条1凸
+        </p>
+
+        <p class="text-sm text-gray-300 font-bold">
+            ・残滓豊富
+        </p>
+        
+        <p class="text-sm text-gray-300 font-bold">
+            ・育成すれば化けます🔥
+        </p>
+        
+        <p class="text-sm text-gray-300 font-bold">
+            ・ストーリー進行済み
+        </p>
+
+        <button class="w-full py-3 rounded-xl bg-purple-600 font-black mt-2">
+            購入希望の方はこちらをタップ
+        </button>
+
+    </div>
+
+</div>
         </div>
     </div>
 
@@ -305,6 +612,37 @@ function showSection(section){
 
 document.getElementById("onlineUsers").innerText =
 randomUsers;
+}
+
+function toggleDetail(card){
+
+    const detail = card.querySelector(".detail-box");
+
+    detail.classList.toggle("active");
+}
+
+function filterItems(tag){
+
+    const items = document.querySelectorAll(".item");
+
+    items.forEach(item => {
+
+        if(tag === "all"){
+
+            item.style.display = "block";
+            return;
+        }
+
+        if(item.dataset.tag.includes(tag)){
+
+            item.style.display = "block";
+        }
+
+        else{
+
+            item.style.display = "none";
+        }
+    });
 }
 
 </script>
