@@ -132,6 +132,29 @@
     max-height: 500px;
     margin-top: 16px;
 }
+
+.hidden-tags{
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    max-height: 0;
+    overflow: hidden;
+
+    opacity: 0;
+
+    transition: 0.35s ease;
+}
+
+.hidden-tags.active{
+
+    max-height: 300px;
+
+    opacity: 1;
+
+    margin-top: 10px;
+}
     </style>
 </head>
 <body class="bg-grid">
@@ -187,7 +210,11 @@
         ファンパレ アカウント
     </h2>
     
-    <div class="flex gap-2 overflow-x-auto pb-2">
+    <div class="space-y-3">
+    
+    <!-- 最初に見せるタグ -->
+
+    <div class="flex gap-2 flex-wrap">
 
     <button class="tag-button" onclick="filterItems('all')">
         全て
@@ -205,130 +232,108 @@
         0.2秒五条
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('覚醒五条')">
         覚醒五条
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('領域五条')">
         領域五条
     </button>
+    
+    <!-- 隠れてるタグ -->
 
-</div>
+    <div id="moreTags" class="hidden-tags">
 
 <button class="tag-button" onclick="filterItems('幻虎杖')">
         幻虎杖
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('ゾーン虎杖')">
         ゾーン虎杖
     </button>
-
-</div>
 
 <button class="tag-button" onclick="filterItems('学生家入')">
         学生家入
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('行家入')">
         行家入
     </button>
-
-</div>
 
 <button class="tag-button" onclick="filterItems('脹相')">
         脹相
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('脱兎伏黒')">
         脱兎伏黒
     </button>
-
-</div>
 
 <button class="tag-button" onclick="filterItems('幻真人')">
         幻真人
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('フーガ宿儺')">
         フーガ宿儺
     </button>
-
-</div>
 
 <button class="tag-button" onclick="filterItems('影宿儺')">
         影宿儺
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('影乙骨')">
         影乙骨
     </button>
-
-</div>
 
 <button class="tag-button" onclick="filterItems('幻乙骨')">
         幻乙骨
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('執行人乙骨')">
         執行人乙骨
     </button>
-
-</div>
 
 <button class="tag-button" onclick="filterItems('学生七海')">
         学生七海
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('夜東堂')">
         夜東堂
     </button>
-
-</div>
 
 <button class="tag-button" onclick="filterItems('影夏油')">
         影夏油
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('幻夏油')">
         幻夏油
     </button>
-
-</div>
 
 <button class="tag-button" onclick="filterItems('ミゲル')">
         ミゲル
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('行裏梅')">
         行裏梅
     </button>
 
-</div>
-
 <button class="tag-button" onclick="filterItems('行日下部')">
         行日下部
+    </button>
+
+</div>
+
+<!-- 開閉ボタン -->
+
+    <button
+
+        id="toggleTagsBtn"
+
+        class="text-sm text-purple-300 font-black"
+
+        onclick="toggleTags()">
+
+        すべてのタグを見る ▼
+
     </button>
 
 </div>
@@ -643,6 +648,29 @@ function filterItems(tag){
             item.style.display = "none";
         }
     });
+}
+
+function toggleTags(){
+
+    const moreTags =
+    document.getElementById("moreTags");
+
+    const button =
+    document.getElementById("toggleTagsBtn");
+
+    moreTags.classList.toggle("active");
+
+    if(moreTags.classList.contains("active")){
+
+        button.innerText =
+        "タグを閉じる ▲";
+    }
+
+    else{
+
+        button.innerText =
+        "すべてのタグを見る ▼";
+    }
 }
 
 </script>
