@@ -595,7 +595,7 @@ onclick="toggleDetail(this)">
     
     <script>
 
-let activeTag = "all";
+let activeTags = [];
 
 function showSection(section){
 
@@ -645,10 +645,93 @@ function toggleDetail(card){
 
 function filterItems(tag){
 
-    const items = document.querySelectorAll(".item");
+    const items =
+    document.querySelectorAll(".item");
 
     const buttons =
     document.querySelectorAll(".tag-button");
+
+    /* 全て押したらリセット */
+
+    if(tag === "all"){
+
+        activeTags = [];
+
+        buttons.forEach(button => {
+            button.classList.remove("active");
+        });
+
+        items.forEach(item => {
+            item.style.display = "block";
+        });
+
+        return;
+    }
+
+    /* 既に選択されてるなら解除 */
+
+    if(activeTags.includes(tag)){
+
+        activeTags =
+        activeTags.filter(t => t !== tag);
+    }
+
+    /* 選択追加 */
+
+    else{
+
+        activeTags.push(tag);
+    }
+
+    /* ボタン色更新 */
+
+    buttons.forEach(button => {
+
+        button.classList.remove("active");
+
+        activeTags.forEach(tag => {
+
+            if(button.innerText.includes(tag)){
+
+                button.classList.add("active");
+            }
+        });
+    });
+
+    /* 商品フィルター */
+
+    items.forEach(item => {
+
+        const tags =
+        item.dataset.tag;
+
+        /* タグ未選択なら全部表示 */
+
+        if(activeTags.length === 0){
+
+            item.style.display = "block";
+
+            return;
+        }
+
+        /* 全タグ含むか判定 */
+
+        const match =
+        activeTags.every(tag =>
+            tags.includes(tag)
+        );
+
+        if(match){
+
+            item.style.display = "block";
+        }
+
+        else{
+
+            item.style.display = "none";
+        }
+    });
+}
 
     /* 同じタグ押したら解除 */
 
