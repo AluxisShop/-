@@ -121,6 +121,22 @@
     color: #d1d5db;
 }
 
+.tag-button.active{
+    background: linear-gradient(
+        135deg,
+        rgba(168,85,247,0.45),
+        rgba(139,92,246,0.25)
+    );
+
+    border: 1px solid rgba(192,132,252,0.8);
+
+    color: white;
+
+    box-shadow:
+    0 0 18px rgba(168,85,247,0.35),
+    inset 0 0 12px rgba(255,255,255,0.05);
+}
+
 .detail-box{
     max-height: 0;
     overflow: hidden;
@@ -579,6 +595,8 @@ onclick="toggleDetail(this)">
     
     <script>
 
+let activeTag = "all";
+
 function showSection(section){
 
     const fanpare = document.getElementById("fanpareSection");
@@ -610,13 +628,12 @@ function showSection(section){
 
         fanpareBtn.className =
         "flex-1 py-3 rounded-full text-xs font-black bg-white/5 border border-white/10 text-gray-500";
-
     }
-    
+
     const randomUsers = Math.floor(Math.random() * 30) + 100;
 
-document.getElementById("onlineUsers").innerText =
-randomUsers;
+    document.getElementById("onlineUsers").innerText =
+    randomUsers;
 }
 
 function toggleDetail(card){
@@ -630,15 +647,50 @@ function filterItems(tag){
 
     const items = document.querySelectorAll(".item");
 
+    const buttons =
+    document.querySelectorAll(".tag-button");
+
+    /* 同じタグ押したら解除 */
+
+    if(activeTag === tag){
+
+        activeTag = "all";
+    }
+
+    else{
+
+        activeTag = tag;
+    }
+
+    /* ボタン色リセット */
+
+    buttons.forEach(button => {
+
+        button.classList.remove("active");
+
+        /* 押したタグだけ光らせる */
+
+        if(
+            button.innerText.includes(activeTag)
+            &&
+            activeTag !== "all"
+        ){
+
+            button.classList.add("active");
+        }
+    });
+
+    /* 商品表示 */
+
     items.forEach(item => {
 
-        if(tag === "all"){
+        if(activeTag === "all"){
 
             item.style.display = "block";
             return;
         }
 
-        if(item.dataset.tag.includes(tag)){
+        if(item.dataset.tag.includes(activeTag)){
 
             item.style.display = "block";
         }
