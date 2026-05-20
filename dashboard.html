@@ -733,58 +733,6 @@ function filterItems(tag){
     });
 }
 
-    /* 同じタグ押したら解除 */
-
-    if(activeTag === tag){
-
-        activeTag = "all";
-    }
-
-    else{
-
-        activeTag = tag;
-    }
-
-    /* ボタン色リセット */
-
-    buttons.forEach(button => {
-
-        button.classList.remove("active");
-
-        /* 押したタグだけ光らせる */
-
-        if(
-            button.innerText.includes(activeTag)
-            &&
-            activeTag !== "all"
-        ){
-
-            button.classList.add("active");
-        }
-    });
-
-    /* 商品表示 */
-
-    items.forEach(item => {
-
-        if(activeTag === "all"){
-
-            item.style.display = "block";
-            return;
-        }
-
-        if(item.dataset.tag.includes(activeTag)){
-
-            item.style.display = "block";
-        }
-
-        else{
-
-            item.style.display = "none";
-        }
-    });
-}
-
 function toggleTags(){
 
     const moreTags =
