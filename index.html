@@ -49,7 +49,7 @@ body{background:#050505;color:white}
 </div>
 
 <script>
-const PASS = "admin123";
+const PASS = "hanakage1313";
 
 function loginCheck(){
   if(pass.value === PASS){
@@ -128,18 +128,7 @@ function render(){
               購入
             </button>
 
-            <a href="data:text/html,
-              <html><body style='background:black;color:white;font-family:sans-serif;padding:20px'>
-              <h1>${i.name}</h1>
-              <img src='${i.img}' style='max-width:100%%'>
-              <p>¥${i.price}</p>
-              <button onclick=\"location.href='https://buy.stripe.com/test_xxx'\">
-              Stripe購入
-              </button>
-              </body></html>"
-              class="bg-gray-700 p-2 rounded text-xs">
-              商品
-            </a>
+            
 
             <button onclick="del(${i.id})" class="bg-red-500 p-2 rounded text-xs">×</button>
           </div>
