@@ -71,14 +71,19 @@ const ADMIN_PASS = "admin123";
 let isAdmin = false;
 
 function login(){
-  if(pass.value === ADMIN_PASS){
-    login.style.display="none";
-    app.classList.remove("hidden");
+  const passInput = document.getElementById("pass");
+  const loginBox = document.getElementById("login");
+  const appBox = document.getElementById("app");
+
+  if(passInput.value === ADMIN_PASS){
+    loginBox.style.display = "none";
+    appBox.classList.remove("hidden");
     isAdmin = true;
     render();
   } else {
     alert("パスワード違う");
   }
+}
 }
 
 let data = JSON.parse(localStorage.getItem("shop")||"[]");
