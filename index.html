@@ -3,28 +3,37 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Shop Pro Secure</title>
+<title>Shop Pro Secure FIX</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-body{background:#050505;color:white;font-family:-apple-system}
+body{
+  background:#050505;
+  color:white;
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
 .card{
   background:rgba(255,255,255,0.06);
   backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,0.08);
   border-radius:14px;
 }
+
 .btn:active{transform:scale(.97)}
 </style>
 </head>
 
 <body>
 
-<!-- ログイン -->
+<!-- LOGIN -->
 <div id="login" class="fixed inset-0 flex items-center justify-center bg-black z-50">
   <div class="card p-6 w-80">
     <h1 class="font-bold mb-3">ADMIN LOGIN</h1>
-    <input id="pass" type="password" class="w-full p-2 bg-black/50 rounded" placeholder="password">
+    <input id="pass" type="password"
+      class="w-full p-2 bg-black/50 rounded"
+      placeholder="password">
+
     <button onclick="login()"
       class="w-full mt-3 bg-blue-600 p-2 rounded">
       ログイン
@@ -32,31 +41,44 @@ body{background:#050505;color:white;font-family:-apple-system}
   </div>
 </div>
 
-<!-- 本体 -->
+<!-- APP -->
 <div id="app" class="hidden">
 
-<!-- ヘッダー -->
+<!-- HEADER -->
 <div class="p-3 flex justify-between border-b border-gray-800">
   <div class="font-bold">⚡ Shop Pro</div>
   <div>売上 ¥<span id="sales">0</span></div>
 </div>
 
-<!-- 入力（管理者のみ） -->
-<div id="adminPanel" class="p-3 grid grid-cols-2 gap-2">
+<!-- SEARCH -->
+<div class="p-3">
+  <input id="search"
+    oninput="render()"
+    class="w-full p-2 rounded bg-gray-900"
+    placeholder="検索">
+</div>
+
+<!-- ADD -->
+<div class="p-3 grid grid-cols-2 gap-2">
 
   <input id="name" class="card p-2" placeholder="商品名">
   <input id="price" class="card p-2" placeholder="価格">
+
   <input id="img" class="card p-2 col-span-2" placeholder="画像URL">
-  <input id="video" class="card p-2 col-span-2" placeholder="動画URL（YouTube埋め込みOK）">
-  <textarea id="desc" class="card p-2 col-span-2" placeholder="商品説明"></textarea>
+  <input id="video" class="card p-2 col-span-2" placeholder="動画URL（YouTube）">
+
+  <textarea id="desc"
+    class="card p-2 col-span-2"
+    placeholder="商品説明"></textarea>
 
   <button onclick="add()"
     class="bg-blue-600 p-3 rounded col-span-2 btn">
-    ＋商品追加
+    ＋追加
   </button>
+
 </div>
 
-<!-- 商品一覧 -->
+<!-- LIST -->
 <div id="list" class="p-3 grid gap-4"></div>
 
 <div id="empty" class="hidden text-center text-gray-500 p-10">
@@ -66,8 +88,8 @@ body{background:#050505;color:white;font-family:-apple-system}
 </div>
 
 <script>
-const ADMIN_PASS = "admin123";
 
+const ADMIN_PASS = "admin123";
 let isAdmin = false;
 
 function login(){
@@ -84,61 +106,85 @@ function login(){
     alert("パスワード違う");
   }
 }
-}
 
-let data = JSON.parse(localStorage.getItem("shop")||"[]");
-let sales = Number(localStorage.getItem("sales")||0);
+// DATA
+let data = JSON.parse(localStorage.getItem("shop") || "[]");
+let sales = Number(localStorage.getItem("sales") || 0);
 
 function save(){
-  localStorage.setItem("shop",JSON.stringify(data));
-  localStorage.setItem("sales",sales);
+  localStorage.setItem("shop", JSON.stringify(data));
+  localStorage.setItem("sales", sales);
 }
 
+// ADD
 function add(){
-  if(!name.value) return alert("商品名必須");
+
+  const nameEl = document.getElementById("name");
+  const priceEl = document.getElementById("price");
+  const imgEl = document.getElementById("img");
+  const videoEl = document.getElementById("video");
+  const descEl = document.getElementById("desc");
+
+  if(!nameEl.value) return alert("商品名必須");
 
   data.unshift({
-    id:Date.now(),
-    name:name.value,
-    price:Number(price.value||0),
-    img:img.value,
-    video:video.value,
-    desc:desc.value,
-    sold:0
+    id: Date.now(),
+    name: nameEl.value,
+    price: Number(priceEl.value || 0),
+    img: imgEl.value,
+    video: videoEl.value,
+    desc: descEl.value,
+    sold: 0
   });
 
-  name.value=price.value=img.value=video.value=desc.value="";
+  nameEl.value = priceEl.value = imgEl.value = videoEl.value = descEl.value = "";
+
   save();
   render();
 }
 
+// BUY
 function buy(id){
   data = data.map(i=>{
-    if(i.id===id){
-      i.sold = (i.sold||0)+1;
+    if(i.id === id){
+      i.sold = (i.sold || 0) + 1;
       sales += i.price;
-      window.open("https://buy.stripe.com/test_xxx","_blank");
+      window.open("https://buy.stripe.com/test_xxx", "_blank");
     }
     return i;
   });
+
   save();
   render();
 }
 
+// DELETE
 function del(id){
-  if(!isAdmin) return alert("管理者のみ削除可能");
-  data = data.filter(i=>i.id!==id);
+  if(!isAdmin) return alert("管理者のみ");
+  data = data.filter(i => i.id !== id);
   save();
   render();
 }
 
+// PARAM
 function getParam(){
   return new URLSearchParams(location.search).get("item");
 }
 
+// YOUTUBE
+function convertYouTube(url){
+  if(!url) return "";
+  if(url.includes("watch?v=")){
+    return url.replace("watch?v=", "embed/");
+  }
+  return url;
+}
+
+// RENDER
 function render(){
 
-  const q = (search?.value || "").toLowerCase();
+  const searchEl = document.getElementById("search") || {value:""};
+  const q = searchEl.value.toLowerCase();
 
   let filtered = data.filter(i =>
     i.name.toLowerCase().includes(q)
@@ -148,35 +194,34 @@ function render(){
 
   const id = getParam();
 
-  // =========================
-  // 商品詳細ページ
-  // =========================
+  const list = document.getElementById("list");
+  const salesEl = document.getElementById("sales");
+  const empty = document.getElementById("empty");
+
+  // DETAIL PAGE
   if(id){
-    const item = data.find(i=>i.id==id);
+    const item = data.find(i => i.id == id);
     if(!item) return;
 
     list.innerHTML = `
       <div class="card p-5">
 
         ${item.img ? `
-          <img src="${item.img}"
-          class="w-full h-60 object-cover rounded mb-3">
+          <img src="${item.img}" class="w-full h-60 object-cover rounded mb-3">
         ` : ""}
 
         <div class="text-2xl font-bold">${item.name}</div>
         <div class="text-gray-300">¥${item.price}</div>
 
         <div class="text-yellow-400 text-sm mt-2">
-          🔥 ${item.sold||0}件販売
+          🔥 ${item.sold || 0}件販売
         </div>
 
         ${item.video ? `
-          <div class="mt-4">
-            <iframe width="100%" height="200"
-            src="${convertYouTube(item.video)}"
-            frameborder="0"
-            allowfullscreen></iframe>
-          </div>
+          <iframe width="100%" height="200"
+          src="${convertYouTube(item.video)}"
+          frameborder="0"
+          allowfullscreen></iframe>
         ` : ""}
 
         <div class="mt-3 text-sm text-gray-300">
@@ -198,11 +243,9 @@ function render(){
     return;
   }
 
-  // =========================
-  // 一覧
-  // =========================
-  list.innerHTML="";
-  salesEl.textContent=sales;
+  // LIST
+  list.innerHTML = "";
+  salesEl.textContent = sales;
 
   empty.style.display = filtered.length ? "none" : "block";
 
@@ -236,19 +279,9 @@ function render(){
   });
 }
 
-// YouTube変換
-function convertYouTube(url){
-  if(!url) return "";
-  if(url.includes("watch?v=")){
-    return url.replace("watch?v=","embed/");
-  }
-  return url;
-}
-
-const salesEl=document.getElementById("sales");
-const empty=document.getElementById("empty");
-
+// INIT
 render();
+
 </script>
 
 </body>
