@@ -1,57 +1,94 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HNKG MARKET - TOP</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
-        body { background: #0d0d1a; color: white; font-family: 'Inter', sans-serif; margin: 0; }
-        .bg-grid {
-            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-        .text-gradient {
-            background: linear-gradient(180deg, #FFFFFF 30%, #c084fc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Inventory Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-grid min-h-screen flex flex-col items-center justify-center px-6">
-    <div class="max-w-md w-full text-center space-y-12">
-        <div class="space-y-2">
-            <h1 class="text-7xl font-black tracking-tighter leading-[0.9] text-gradient uppercase">
-                HNKG<br>MARKET
-            </h1>
-            <p class="text-gray-500 text-[10px] tracking-[0.4em] font-bold uppercase">ファンパレ・バウンティ 垢販売</p>
-        </div>
 
-        <div class="flex justify-center opacity-20">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
-        </div>
-        
-        <button
-    class="block w-full py-4 rounded-2xl
-    font-black text-lg tracking-wide text-center
-    text-white
-    border border-purple-400/50
-    bg-gradient-to-r from-purple-900/60 to-fuchsia-800/40
-    shadow-[0_0_25px_rgba(168,85,247,0.35)]
-    backdrop-blur-xl
-    transition-all duration-300
-    active:scale-95">
+<body class="bg-gray-950 text-white min-h-screen">
 
-    ✦ はじめに ✦
+<!-- ヘッダー -->
+<div class="p-6 border-b border-gray-800 flex justify-between items-center">
+  <h1 class="text-xl font-bold">📦 在庫ダッシュボード</h1>
+  <button onclick="clearAll()" class="bg-red-600 px-3 py-1 rounded text-sm">全削除</button>
+</div>
 
-</button>
-        
-        <a href="dashboard.html" 
-           class="block w-full py-5 rounded-2xl font-black text-xl tracking-widest text-center shadow-[0_0_20px_rgba(124,58,237,0.3)] transition-transform active:scale-95"
-           style="background: linear-gradient(90deg, #7c3aed, #ec4899);">
-            在庫を見る
-        </a>
-    </div>
+<!-- 入力エリア -->
+<div class="p-6 grid md:grid-cols-4 gap-3">
+  <input id="name" class="p-2 bg-gray-800 rounded" placeholder="アカウント名 / 商品名">
+  <input id="price" class="p-2 bg-gray-800 rounded" placeholder="価格">
+  <input id="note" class="p-2 bg-gray-800 rounded" placeholder="メモ">
+  <button onclick="addItem()" class="bg-blue-600 rounded p-2">追加</button>
+</div>
+
+<!-- 在庫一覧 -->
+<div class="p-6 grid md:grid-cols-3 gap-4" id="list"></div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("inventory") || "[]");
+
+function save() {
+  localStorage.setItem("inventory", JSON.stringify(data));
+  render();
+}
+
+function addItem() {
+  const name = document.getElementById("name").value;
+  const price = document.getElementById("price").value;
+  const note = document.getElementById("note").value;
+
+  if (!name) return alert("名前は必須");
+
+  data.push({
+    id: Date.now(),
+    name,
+    price,
+    note
+  });
+
+  document.getElementById("name").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("note").value = "";
+
+  save();
+}
+
+function deleteItem(id) {
+  data = data.filter(i => i.id !== id);
+  save();
+}
+
+function clearAll() {
+  if (confirm("全部削除する？")) {
+    data = [];
+    save();
+  }
+}
+
+function render() {
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  data.forEach(item => {
+    list.innerHTML += `
+      <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
+        <div class="font-bold text-lg">${item.name}</div>
+        <div class="text-sm text-gray-400 mt-1">💰 ${item.price || "未設定"}</div>
+        <div class="text-sm text-gray-400 mt-1">${item.note || ""}</div>
+
+        <button onclick="deleteItem(${item.id})"
+          class="mt-3 bg-red-500 px-3 py-1 rounded text-sm">
+          削除
+        </button>
+      </div>
+    `;
+  });
+}
+
+render();
+</script>
+
 </body>
 </html>
