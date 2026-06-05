@@ -3,14 +3,20 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Pro Inventory System</title>
+<title>SHOP SYSTEM PRO</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
 body{
-  background:#0a0a0a;
+  background:#0b0b0f;
   color:white;
   font-family:-apple-system,BlinkMacSystemFont;
+}
+
+.sidebar{
+  width:240px;
+  background:rgba(255,255,255,0.04);
+  border-right:1px solid rgba(255,255,255,0.08);
 }
 
 .card{
@@ -19,19 +25,42 @@ body{
   border:1px solid rgba(255,255,255,0.08);
   border-radius:14px;
 }
+
 .btn:active{transform:scale(.97)}
 </style>
 </head>
 
-<body>
+<body class="flex">
 
-<div class="p-3 border-b border-gray-800 flex justify-between">
-  <div class="font-bold">⚡ PRO SYSTEM</div>
-  <div>売上 ¥<span id="sales">0</span></div>
+<!-- SIDEBAR -->
+<div class="sidebar p-4 hidden md:block">
+
+  <div class="text-xl font-bold mb-6">🛍 SHOP PRO</div>
+
+  <div class="space-y-2 text-sm text-gray-300">
+    <div>📊 Dashboard</div>
+    <div>📦 Products</div>
+    <div>💰 Sales</div>
+    <div>📤 Export CSV</div>
+  </div>
+
+  <button onclick="exportCSV()"
+    class="mt-6 w-full bg-blue-600 p-2 rounded text-sm">
+    CSV出力
+  </button>
+
 </div>
 
-<!-- DASHBOARD -->
-<div class="p-3 grid grid-cols-3 gap-2">
+<!-- MAIN -->
+<div class="flex-1 p-4">
+
+<!-- STATS -->
+<div class="grid grid-cols-3 gap-2 mb-4">
+
+  <div class="card p-3">
+    <div class="text-xs text-gray-400">売上</div>
+    <div class="text-xl font-bold">¥<span id="sales">0</span></div>
+  </div>
 
   <div class="card p-3">
     <div class="text-xs text-gray-400">商品数</div>
@@ -39,73 +68,62 @@ body{
   </div>
 
   <div class="card p-3">
-    <div class="text-xs text-gray-400">売上数</div>
-    <div class="text-xl font-bold" id="sold">0</div>
-  </div>
-
-  <div class="card p-3">
-    <div class="text-xs text-gray-400">在庫合計</div>
+    <div class="text-xs text-gray-400">在庫</div>
     <div class="text-xl font-bold" id="stockTotal">0</div>
   </div>
 
 </div>
 
-<!-- ADD (ADMIN ONLY) -->
-<div id="adminPanel" class="p-3 grid grid-cols-2 gap-2 hidden">
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="card p-3 mb-4 grid grid-cols-2 gap-2 hidden">
 
-  <input id="name" class="card p-2" placeholder="商品名">
-  <input id="price" class="card p-2" placeholder="価格">
-  <input id="stock" class="card p-2" placeholder="在庫">
-  <input id="img" class="card p-2 col-span-2" placeholder="画像URL">
+  <input id="name" class="p-2 bg-black/40 rounded" placeholder="商品名">
+  <input id="price" class="p-2 bg-black/40 rounded" placeholder="価格">
+  <input id="stock" class="p-2 bg-black/40 rounded" placeholder="在庫">
+  <input id="img" class="p-2 bg-black/40 rounded col-span-2" placeholder="画像URL">
 
   <button onclick="add()"
     class="bg-blue-600 p-3 rounded col-span-2">
-    ＋追加
+    ＋商品追加
   </button>
 
 </div>
 
-<!-- LIST -->
-<div id="list" class="p-3 grid gap-3"></div>
+<!-- PRODUCT LIST -->
+<div id="list" class="grid md:grid-cols-3 gap-3"></div>
+
+</div>
 
 <script>
 
-// 🔐 管理キー（これ知ってる人だけ編集OK）
-const ADMIN_KEY = "hanakage_admin";
+const ADMIN_KEY = "shop_admin";
+const isAdmin = new URLSearchParams(location.search).get("admin") === ADMIN_KEY;
 
-const params = new URLSearchParams(location.search);
-const isAdmin = params.get("admin") === ADMIN_KEY;
-
-// データ
+// DATA
 let data = JSON.parse(localStorage.getItem("shop")||"[]");
 let sales = Number(localStorage.getItem("sales")||0);
+
+if(isAdmin){
+  document.getElementById("adminPanel").classList.remove("hidden");
+}
 
 function save(){
   localStorage.setItem("shop",JSON.stringify(data));
   localStorage.setItem("sales",sales);
 }
 
-// 管理UI表示
-if(isAdmin){
-  document.getElementById("adminPanel").classList.remove("hidden");
-}
-
 // ADD
 function add(){
 
-  const n = name.value;
-  const p = Number(price.value||0);
-  const s = Number(stock.value||0);
-
-  if(!n) return alert("商品名必須");
+  if(!name.value) return alert("商品名必須");
 
   data.unshift({
     id:Date.now(),
-    name:n,
-    price:p,
-    stock:s,
-    sold:0,
-    img:img.value
+    name:name.value,
+    price:Number(price.value||0),
+    stock:Number(stock.value||0),
+    img:img.value,
+    sold:0
   });
 
   name.value=price.value=stock.value=img.value="";
@@ -113,16 +131,17 @@ function add(){
   render();
 }
 
-// BUY
-function buy(id){
+// 💳 STRIPE（ここ差し替え）
+function buy(item){
+
+  // 👉 本番ではここをStripe APIに変更
+  window.open("https://buy.stripe.com/test_xxx","_blank");
 
   data = data.map(i=>{
-    if(i.id===id && i.stock>0){
+    if(i.id===item.id && i.stock>0){
       i.stock--;
       i.sold++;
       sales += i.price;
-
-      window.open("https://buy.stripe.com/test_xxx","_blank");
     }
     return i;
   });
@@ -133,54 +152,115 @@ function buy(id){
 
 // DELETE
 function del(id){
-  if(!isAdmin) return alert("権限なし");
+  if(!isAdmin) return;
   data = data.filter(i=>i.id!==id);
   save();
   render();
 }
 
+// CSV EXPORT
+function exportCSV(){
+
+  let csv = "name,price,stock,sold\n";
+
+  data.forEach(i=>{
+    csv += `${i.name},${i.price},${i.stock},${i.sold}\n`;
+  });
+
+  const blob = new Blob([csv],{type:"text/csv"});
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "sales.csv";
+  a.click();
+}
+
 // STATS
 function calc(){
 
-  document.getElementById("count").textContent = data.length;
+  document.getElementById("sales").textContent = sales;
 
-  document.getElementById("sold").textContent =
-    data.reduce((a,b)=>a+(b.sold||0),0);
+  document.getElementById("count").textContent = data.length;
 
   document.getElementById("stockTotal").textContent =
     data.reduce((a,b)=>a+(b.stock||0),0);
-
-  document.getElementById("sales").textContent = sales;
 }
 
-// RENDER
+// LP（商品ページ）
 function render(){
 
   calc();
 
   const list = document.getElementById("list");
+  const id = new URLSearchParams(location.search).get("item");
 
+  // =====================
+  // LP MODE
+  // =====================
+  if(id){
+    const item = data.find(i=>i.id==id);
+    if(!item) return;
+
+    list.innerHTML = `
+      <div class="card p-4">
+
+        <img src="${item.img}"
+          class="w-full h-64 object-cover rounded mb-3">
+
+        <div class="text-2xl font-bold">${item.name}</div>
+
+        <div class="text-gray-300">¥${item.price}</div>
+
+        <div class="text-yellow-400 text-sm mt-2">
+          🔥 ${item.sold||0} sold
+        </div>
+
+        <div class="text-gray-400 text-sm mt-2">
+          在庫：${item.stock}
+        </div>
+
+        <button onclick="buy(${item.id})"
+          class="w-full mt-4 bg-blue-600 p-3 rounded text-lg">
+          今すぐ購入
+        </button>
+
+        <button onclick="location.href='/'"
+          class="w-full mt-2 text-gray-400 text-sm">
+          ← 戻る
+        </button>
+
+      </div>
+    `;
+    return;
+  }
+
+  // =====================
+  // GRID MODE
+  // =====================
   list.innerHTML="";
 
   data
   .sort((a,b)=>(b.sold||0)-(a.sold||0))
   .forEach(i=>{
 
+    const warn = i.stock <= 3 ? "text-red-400" : "text-gray-400";
+
     list.innerHTML += `
       <div class="card p-3">
 
-        ${i.img ? `
-          <img src="${i.img}" class="h-40 w-full object-cover rounded mb-2">
-        ` : ""}
+        <img src="${i.img}"
+          class="h-40 w-full object-cover rounded mb-2"
+          onclick="location.href='?item=${i.id}'">
 
         <div class="font-bold">${i.name}</div>
 
-        <div class="text-gray-400">
+        <div class="${warn}">
           ¥${i.price} / 在庫:${i.stock}
         </div>
 
         <div class="text-xs text-yellow-400 mt-1">
-          🔥 ${i.sold||0} sold
+          🔥 ${i.sold||0}
         </div>
 
         <button onclick="buy(${i.id})"
