@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mobile Shop Pro</title>
+<title>Shop Pro Secure</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-body{background:#050505;color:white}
+body{background:#050505;color:white;font-family:-apple-system}
 .card{
   background:rgba(255,255,255,0.06);
   backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,0.08);
-  border-radius:12px;
+  border-radius:14px;
 }
 .btn:active{transform:scale(.97)}
 </style>
@@ -20,39 +20,67 @@ body{background:#050505;color:white}
 
 <body>
 
+<!-- ログイン -->
+<div id="login" class="fixed inset-0 flex items-center justify-center bg-black z-50">
+  <div class="card p-6 w-80">
+    <h1 class="font-bold mb-3">ADMIN LOGIN</h1>
+    <input id="pass" type="password" class="w-full p-2 bg-black/50 rounded" placeholder="password">
+    <button onclick="login()"
+      class="w-full mt-3 bg-blue-600 p-2 rounded">
+      ログイン
+    </button>
+  </div>
+</div>
+
+<!-- 本体 -->
+<div id="app" class="hidden">
+
 <!-- ヘッダー -->
 <div class="p-3 flex justify-between border-b border-gray-800">
   <div class="font-bold">⚡ Shop Pro</div>
   <div>売上 ¥<span id="sales">0</span></div>
 </div>
 
-<!-- 検索 -->
-<div class="p-3">
-  <input id="search" oninput="render()"
-    class="w-full p-2 rounded bg-gray-900"
-    placeholder="商品検索">
-</div>
+<!-- 入力（管理者のみ） -->
+<div id="adminPanel" class="p-3 grid grid-cols-2 gap-2">
 
-<!-- 入力 -->
-<div class="p-3 grid grid-cols-2 gap-2">
   <input id="name" class="card p-2" placeholder="商品名">
   <input id="price" class="card p-2" placeholder="価格">
   <input id="img" class="card p-2 col-span-2" placeholder="画像URL">
+  <input id="video" class="card p-2 col-span-2" placeholder="動画URL（YouTube埋め込みOK）">
+  <textarea id="desc" class="card p-2 col-span-2" placeholder="商品説明"></textarea>
 
   <button onclick="add()"
-    class="bg-blue-600 p-2 rounded col-span-2 btn">
-    追加
+    class="bg-blue-600 p-3 rounded col-span-2 btn">
+    ＋商品追加
   </button>
 </div>
 
 <!-- 商品一覧 -->
-<div id="list" class="p-3 grid gap-3"></div>
+<div id="list" class="p-3 grid gap-4"></div>
 
 <div id="empty" class="hidden text-center text-gray-500 p-10">
   商品なし
 </div>
 
+</div>
+
 <script>
+const ADMIN_PASS = "admin123";
+
+let isAdmin = false;
+
+function login(){
+  if(pass.value === ADMIN_PASS){
+    login.style.display="none";
+    app.classList.remove("hidden");
+    isAdmin = true;
+    render();
+  } else {
+    alert("パスワード違う");
+  }
+}
+
 let data = JSON.parse(localStorage.getItem("shop")||"[]");
 let sales = Number(localStorage.getItem("sales")||0);
 
@@ -69,10 +97,12 @@ function add(){
     name:name.value,
     price:Number(price.value||0),
     img:img.value,
+    video:video.value,
+    desc:desc.value,
     sold:0
   });
 
-  name.value=price.value=img.value="";
+  name.value=price.value=img.value=video.value=desc.value="";
   save();
   render();
 }
@@ -80,9 +110,8 @@ function add(){
 function buy(id){
   data = data.map(i=>{
     if(i.id===id){
-      i.sold = (i.sold||0) + 1;
+      i.sold = (i.sold||0)+1;
       sales += i.price;
-
       window.open("https://buy.stripe.com/test_xxx","_blank");
     }
     return i;
@@ -92,6 +121,7 @@ function buy(id){
 }
 
 function del(id){
+  if(!isAdmin) return alert("管理者のみ削除可能");
   data = data.filter(i=>i.id!==id);
   save();
   render();
@@ -103,41 +133,59 @@ function getParam(){
 
 function render(){
 
-  const q = search.value.toLowerCase();
+  const q = (search?.value || "").toLowerCase();
 
   let filtered = data.filter(i =>
     i.name.toLowerCase().includes(q)
   );
 
-  // ⭐ランキング（売れた順）
-  filtered.sort((a,b)=> (b.sold||0)-(a.sold||0));
+  filtered.sort((a,b)=>(b.sold||0)-(a.sold||0));
 
   const id = getParam();
 
-  // ⭐商品単体ページ
+  // =========================
+  // 商品詳細ページ
+  // =========================
   if(id){
     const item = data.find(i=>i.id==id);
     if(!item) return;
 
     list.innerHTML = `
-      <div class="card p-4">
+      <div class="card p-5">
 
         ${item.img ? `
-          <img src="${item.img}" class="w-full h-52 object-cover rounded">
+          <img src="${item.img}"
+          class="w-full h-60 object-cover rounded mb-3">
         ` : ""}
 
-        <div class="text-xl font-bold mt-2">${item.name}</div>
-        <div class="text-gray-400">¥${item.price}</div>
-        <div class="text-yellow-400 text-sm">🔥売れ数 ${item.sold||0}</div>
+        <div class="text-2xl font-bold">${item.name}</div>
+        <div class="text-gray-300">¥${item.price}</div>
+
+        <div class="text-yellow-400 text-sm mt-2">
+          🔥 ${item.sold||0}件販売
+        </div>
+
+        ${item.video ? `
+          <div class="mt-4">
+            <iframe width="100%" height="200"
+            src="${convertYouTube(item.video)}"
+            frameborder="0"
+            allowfullscreen></iframe>
+          </div>
+        ` : ""}
+
+        <div class="mt-3 text-sm text-gray-300">
+          ${item.desc || ""}
+        </div>
 
         <button onclick="buy(${item.id})"
-          class="w-full mt-3 bg-blue-600 p-3 rounded btn">
+          class="w-full mt-5 bg-blue-600 p-4 rounded text-xl">
           今すぐ購入
         </button>
 
         <button onclick="location.href='/'"
-          class="w-full mt-2 text-sm text-gray-400">
-          戻る
+          class="w-full mt-2 text-gray-400 text-sm">
+          ← 戻る
         </button>
 
       </div>
@@ -145,6 +193,9 @@ function render(){
     return;
   }
 
+  // =========================
+  // 一覧
+  // =========================
   list.innerHTML="";
   salesEl.textContent=sales;
 
@@ -152,40 +203,45 @@ function render(){
 
   filtered.forEach(i=>{
     list.innerHTML += `
-      <div class="card p-3">
+      <div class="card p-4">
 
         ${i.img ? `
-          <img src="${i.img}" class="h-40 w-full object-cover rounded mb-2">
+          <img src="${i.img}" class="h-48 w-full object-cover rounded mb-3">
         ` : ""}
 
         <div class="font-bold">${i.name}</div>
-        <div class="text-sm text-gray-400">¥${i.price}</div>
-        <div class="text-xs text-yellow-400">🔥売れ ${i.sold||0}</div>
+        <div class="text-gray-400">¥${i.price}</div>
 
-        <div class="flex gap-2 mt-2">
+        <button onclick="buy(${i.id})"
+          class="w-full mt-3 bg-blue-600 p-3 rounded">
+          購入
+        </button>
 
-          <button onclick="buy(${i.id})"
-            class="flex-1 bg-blue-600 p-2 rounded btn">
-            購入
-          </button>
+        <div class="flex justify-between mt-2 text-xs">
+          <a href="?item=${i.id}" class="text-gray-400">詳細</a>
 
-          <a href="?item=${i.id}"
-            class="bg-gray-700 p-2 rounded text-xs">
-            商品
-          </a>
-
-          <button onclick="del(${i.id})"
-            class="bg-red-500 p-2 px-3 rounded">
-            ×
-          </button>
-
+          ${isAdmin ? `
+            <button onclick="del(${i.id})"
+              class="text-red-400">削除</button>
+          ` : ""}
         </div>
+
       </div>
     `;
   });
 }
 
+// YouTube変換
+function convertYouTube(url){
+  if(!url) return "";
+  if(url.includes("watch?v=")){
+    return url.replace("watch?v=","embed/");
+  }
+  return url;
+}
+
 const salesEl=document.getElementById("sales");
+const empty=document.getElementById("empty");
 
 render();
 </script>
