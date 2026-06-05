@@ -3,70 +3,62 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Inventory System</title>
+<title>Mobile Shop Pro</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
 body{background:#050505;color:white}
-.glass{background:rgba(255,255,255,.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08)}
-.btn{transition:.15s}
-.btn:active{transform:scale(.96)}
+.card{
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+}
+.btn:active{transform:scale(.97)}
 </style>
 </head>
 
 <body>
 
-<!-- ログイン -->
-<div id="login" class="fixed inset-0 flex items-center justify-center bg-black z-50">
-  <div class="glass p-6 rounded-xl w-80">
-    <h1 class="font-bold mb-3">LOGIN</h1>
-    <input id="pass" type="password" class="w-full p-2 bg-black/50 rounded" placeholder="password">
-    <button onclick="loginCheck()" class="mt-3 w-full bg-blue-600 p-2 rounded btn">ログイン</button>
-  </div>
+<!-- ヘッダー -->
+<div class="p-3 flex justify-between border-b border-gray-800">
+  <div class="font-bold">⚡ Shop Pro</div>
+  <div>売上 ¥<span id="sales">0</span></div>
 </div>
 
-<!-- 本体 -->
-<div id="app" class="hidden">
-
-<!-- ヘッダー -->
-<header class="p-3 flex justify-between items-center border-b border-gray-800">
-  <div class="font-bold">⚡ Inventory Pro</div>
-  <div class="text-sm">売上: ¥<span id="sales">0</span></div>
-</header>
+<!-- 検索 -->
+<div class="p-3">
+  <input id="search" oninput="render()"
+    class="w-full p-2 rounded bg-gray-900"
+    placeholder="商品検索">
+</div>
 
 <!-- 入力 -->
-<div class="p-3 grid grid-cols-2 md:grid-cols-5 gap-2">
-  <input id="name" class="glass p-2 text-sm" placeholder="商品名">
-  <input id="price" class="glass p-2 text-sm" placeholder="価格">
-  <input id="img" class="glass p-2 text-sm" placeholder="画像URL">
-  <input id="stock" class="glass p-2 text-sm" placeholder="在庫数">
-  <button onclick="add()" class="bg-blue-600 rounded btn">追加</button>
+<div class="p-3 grid grid-cols-2 gap-2">
+  <input id="name" class="card p-2" placeholder="商品名">
+  <input id="price" class="card p-2" placeholder="価格">
+  <input id="img" class="card p-2 col-span-2" placeholder="画像URL">
+
+  <button onclick="add()"
+    class="bg-blue-600 p-2 rounded col-span-2 btn">
+    追加
+  </button>
 </div>
 
-<!-- 一覧 -->
-<div id="list" class="p-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+<!-- 商品一覧 -->
+<div id="list" class="p-3 grid gap-3"></div>
 
+<div id="empty" class="hidden text-center text-gray-500 p-10">
+  商品なし
 </div>
 
 <script>
-const PASS = "hanakage1313";
-
-function loginCheck(){
-  if(pass.value === PASS){
-    login.style.display="none";
-    app.classList.remove("hidden");
-    render();
-  } else alert("パスワード違う");
-}
-
-// DB
-let data = JSON.parse(localStorage.getItem("db")||"[]");
+let data = JSON.parse(localStorage.getItem("shop")||"[]");
 let sales = Number(localStorage.getItem("sales")||0);
 
 function save(){
-  localStorage.setItem("db",JSON.stringify(data));
+  localStorage.setItem("shop",JSON.stringify(data));
   localStorage.setItem("sales",sales);
-  render();
 }
 
 function add(){
@@ -77,68 +69,122 @@ function add(){
     name:name.value,
     price:Number(price.value||0),
     img:img.value,
-    stock:Number(stock.value||0),
     sold:0
   });
 
-  name.value="";
-  price.value="";
-  img.value="";
-  stock.value="";
-
+  name.value=price.value=img.value="";
   save();
+  render();
 }
 
-function sell(id){
+function buy(id){
   data = data.map(i=>{
-    if(i.id===id && i.stock>0){
-      i.stock--;
-      i.sold++;
+    if(i.id===id){
+      i.sold = (i.sold||0) + 1;
       sales += i.price;
+
+      window.open("https://buy.stripe.com/test_xxx","_blank");
     }
     return i;
   });
   save();
+  render();
 }
 
 function del(id){
   data = data.filter(i=>i.id!==id);
   save();
+  render();
+}
+
+function getParam(){
+  return new URLSearchParams(location.search).get("item");
 }
 
 function render(){
+
+  const q = search.value.toLowerCase();
+
+  let filtered = data.filter(i =>
+    i.name.toLowerCase().includes(q)
+  );
+
+  // ⭐ランキング（売れた順）
+  filtered.sort((a,b)=> (b.sold||0)-(a.sold||0));
+
+  const id = getParam();
+
+  // ⭐商品単体ページ
+  if(id){
+    const item = data.find(i=>i.id==id);
+    if(!item) return;
+
+    list.innerHTML = `
+      <div class="card p-4">
+
+        ${item.img ? `
+          <img src="${item.img}" class="w-full h-52 object-cover rounded">
+        ` : ""}
+
+        <div class="text-xl font-bold mt-2">${item.name}</div>
+        <div class="text-gray-400">¥${item.price}</div>
+        <div class="text-yellow-400 text-sm">🔥売れ数 ${item.sold||0}</div>
+
+        <button onclick="buy(${item.id})"
+          class="w-full mt-3 bg-blue-600 p-3 rounded btn">
+          今すぐ購入
+        </button>
+
+        <button onclick="location.href='/'"
+          class="w-full mt-2 text-sm text-gray-400">
+          戻る
+        </button>
+
+      </div>
+    `;
+    return;
+  }
+
   list.innerHTML="";
   salesEl.textContent=sales;
 
-  data.forEach(i=>{
+  empty.style.display = filtered.length ? "none" : "block";
+
+  filtered.forEach(i=>{
     list.innerHTML += `
-      <div class="glass rounded-xl overflow-hidden">
+      <div class="card p-3">
 
-        ${i.img ? `<img src="${i.img}" class="h-40 w-full object-cover">` : ""}
+        ${i.img ? `
+          <img src="${i.img}" class="h-40 w-full object-cover rounded mb-2">
+        ` : ""}
 
-        <div class="p-3">
-          <div class="font-bold">${i.name}</div>
-          <div class="text-sm text-gray-400">¥${i.price}</div>
-          <div class="text-xs text-gray-500">在庫:${i.stock} / 売:${i.sold}</div>
+        <div class="font-bold">${i.name}</div>
+        <div class="text-sm text-gray-400">¥${i.price}</div>
+        <div class="text-xs text-yellow-400">🔥売れ ${i.sold||0}</div>
 
-          <div class="flex gap-2 mt-3">
+        <div class="flex gap-2 mt-2">
 
-            <button onclick="sell(${i.id})"
-              class="flex-1 bg-blue-600 p-2 rounded btn">
-              購入
-            </button>
+          <button onclick="buy(${i.id})"
+            class="flex-1 bg-blue-600 p-2 rounded btn">
+            購入
+          </button>
 
-            
+          <a href="?item=${i.id}"
+            class="bg-gray-700 p-2 rounded text-xs">
+            商品
+          </a>
 
-            <button onclick="del(${i.id})" class="bg-red-500 p-2 rounded text-xs">×</button>
-          </div>
+          <button onclick="del(${i.id})"
+            class="bg-red-500 p-2 px-3 rounded">
+            ×
+          </button>
+
         </div>
       </div>
     `;
   });
 }
 
-// UI
 const salesEl=document.getElementById("sales");
 
 render();
