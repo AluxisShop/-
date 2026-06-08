@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shop System Complete</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{background:#0b0f19;color:#fff}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px}
+</style>
+</head>
+<body class="p-4">
+<h1 class="text-3xl font-bold mb-4">Shop System Complete</h1>
+
+<div id="login" class="card p-4 mb-4">
+  <h2 class="font-bold mb-2">管理者ログイン</h2>
+  <input id="pw" class="text-black p-2 rounded" type="password" placeholder="password">
+  <button onclick="login()" class="bg-blue-600 px-4 py-2 rounded">ログイン</button>
+</div>
+
+<div class="grid md:grid-cols-4 gap-3 mb-4">
+  <div class="card p-3">売上 ¥<span id="sales">0</span></div>
+  <div class="card p-3">商品数 <span id="count">0</span></div>
+  <div class="card p-3">販売数 <span id="sold">0</span></div>
+  <div class="card p-3">在庫 <span id="stock">0</span></div>
+</div>
+
+<div id="admin" class="card p-4 mb-4 hidden">
+  <div class="grid md:grid-cols-2 gap-2">
+    <input id="name" class="text-black p-2 rounded" placeholder="商品名">
+    <input id="price" class="text-black p-2 rounded" placeholder="価格">
+    <input id="category" class="text-black p-2 rounded" placeholder="カテゴリ">
+    <input id="stockInput" class="text-black p-2 rounded" placeholder="在庫">
+    <input id="img" class="text-black p-2 rounded md:col-span-2" placeholder="画像URL">
+    <input id="video" class="text-black p-2 rounded md:col-span-2" placeholder="YouTube URL">
+    <textarea id="desc" class="text-black p-2 rounded md:col-span-2" placeholder="説明"></textarea>
+    <button onclick="addProduct()" class="bg-green-600 p-2 rounded md:col-span-2">商品追加</button>
+  </div>
+</div>
+
+<div class="mb-4 flex gap-2">
+  <input id="search" oninput="render()" class="text-black p-2 rounded flex-1" placeholder="検索">
+  <button onclick="exportCSV()" class="bg-blue-600 px-4 rounded">CSV出力</button>
+</div>
+
+<div id="products" class="grid md:grid-cols-3 gap-3"></div>
+
+<script>
+const PASS="admin123";
+let sales=Number(localStorage.getItem("sales")||0);
+let products=JSON.parse(localStorage.getItem("products")||"[]");
+
+function login(){
+ if(document.getElementById("pw").value===PASS){
+   document.getElementById("admin").classList.remove("hidden");
+   alert("ログイン成功");
+ }
+}
+
+function save(){
+ localStorage.setItem("products",JSON.stringify(products));
+ localStorage.setItem("sales",sales);
+ render();
+}
+
+function addProduct(){
+ products.unshift({
+  id:Date.now(),
+  name:name.value,
+  price:Number(price.value||0),
+  category:category.value,
+  stock:Number(stockInput.value||0),
+  img:img.value,
+  video:video.value,
+  desc:desc.value,
+  sold:0
+ });
+ save();
+}
+
+function buy(id){
+ const p=products.find(x=>x.id===id);
+ if(!p||p.stock<=0) return alert("在庫切れ");
+ p.stock--; p.sold++; sales+=p.price;
+ save();
+}
+
+function delProduct(id){
+ products=products.filter(x=>x.id!==id);
+ save();
+}
+
+function exportCSV(){
+ let csv="name,price,category,stock,sold\n";
+ products.forEach(p=>csv+=`${p.name},${p.price},${p.category},${p.stock},${p.sold}\n`);
+ const blob=new Blob([csv],{type:"text/csv"});
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);
+ a.download="shop.csv";
+ a.click();
+}
+
+function render(){
+ const q=(document.getElementById("search")?.value||"").toLowerCase();
+ const list=products.filter(p=>p.name.toLowerCase().includes(q));
+ products.sort((a,b)=>b.sold-a.sold);
+
+ count.textContent=products.length;
+ sold.textContent=products.reduce((a,b)=>a+b.sold,0);
+ stock.textContent=products.reduce((a,b)=>a+b.stock,0);
+ document.getElementById("sales").textContent=sales;
+
+ products.innerHTML="";
+ const wrap=document.getElementById("products");
+ wrap.innerHTML="";
+ list.forEach(p=>{
+  wrap.innerHTML+=`
+   <div class="card p-3">
+    ${p.img?`<img src="${p.img}" class="w-full h-40 object-cover rounded mb-2">`:""}
+    <div class="font-bold">${p.name}</div>
+    <div>¥${p.price}</div>
+    <div class="text-sm text-gray-300">${p.category}</div>
+    <div class="${p.stock<=3?'text-red-400':'text-gray-300'}">在庫 ${p.stock}</div>
+    <div>販売 ${p.sold}</div>
+    <button onclick="buy(${p.id})" class="bg-blue-600 w-full p-2 rounded mt-2">購入</button>
+    <button onclick="delProduct(${p.id})" class="bg-red-600 w-full p-2 rounded mt-2">削除</button>
+   </div>`;
+ });
+}
+render();
+</script>
+</body>
+</html>
