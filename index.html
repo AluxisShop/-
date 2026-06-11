@@ -215,6 +215,185 @@ text-align:center;
 opacity:.5;
 }
 
+.inventory-tools{
+display:flex;
+gap:15px;
+justify-content:center;
+padding:20px;
+flex-wrap:wrap;
+}
+
+.search-box,
+.filter-box{
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.08);
+
+color:white;
+
+padding:15px;
+
+border-radius:15px;
+
+width:250px;
+}
+
+.inventory-grid{
+
+max-width:1200px;
+
+margin:auto;
+
+padding:20px;
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(280px,1fr));
+
+gap:25px;
+}
+
+.inventory-card{
+
+background:rgba(255,255,255,.05);
+
+backdrop-filter:blur(20px);
+
+border-radius:20px;
+
+padding:25px;
+
+border:1px solid rgba(255,255,255,.08);
+
+transition:.3s;
+}
+
+.inventory-card:hover{
+transform:translateY(-10px);
+}
+
+.badge{
+
+display:inline-block;
+
+background:#00e1ff;
+
+color:black;
+
+padding:5px 12px;
+
+border-radius:999px;
+
+font-weight:bold;
+
+margin-bottom:15px;
+}
+
+.price{
+
+font-size:1.6rem;
+
+font-weight:bold;
+
+margin:15px 0;
+
+color:#00e1ff;
+}
+
+.inventory-card button{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:15px;
+
+background:#00e1ff;
+
+font-weight:bold;
+
+cursor:pointer;
+}
+
+.modal{
+
+display:none;
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.8);
+
+justify-content:center;
+
+align-items:center;
+
+z-index:999;
+}
+
+.modal-content{
+
+width:90%;
+max-width:500px;
+
+background:#111;
+
+padding:30px;
+
+border-radius:25px;
+
+position:relative;
+}
+
+.close{
+
+position:absolute;
+
+top:15px;
+right:20px;
+
+font-size:2rem;
+
+cursor:pointer;
+}
+
+.price-large{
+
+font-size:2rem;
+
+margin:20px 0;
+
+color:#00e1ff;
+}
+
+.buy-btn{
+
+display:block;
+
+text-align:center;
+
+background:#00e1ff;
+
+color:black;
+
+padding:15px;
+
+border-radius:15px;
+
+text-decoration:none;
+
+font-weight:bold;
+}
+
 </style>
 </head>
 
@@ -279,7 +458,7 @@ Premium Account Marketplace
 <div class="game-icon">🧸</div>
 <div class="game-name">ツムツム</div>
 <div class="game-desc">
-コイン大量・高レベル
+コイン大量
 </div>
 </div>
 
@@ -302,17 +481,17 @@ Premium Account Marketplace
 </h2>
 
 <div class="rank-item">
-<span>SSS ファンパレ</span>
+<span>ファンパレ</span>
 <span>1位</span>
 </div>
 
 <div class="rank-item">
-<span>SS バウンティ</span>
+<span>バウンティ</span>
 <span>2位</span>
 </div>
 
 <div class="rank-item">
-<span>SSS ツムツム</span>
+<span>ツムツム</span>
 <span>3位</span>
 </div>
 
@@ -322,6 +501,126 @@ Premium Account Marketplace
 
 <footer>
 © HNKG MARKET
+
+<!-- INVENTORY -->
+
+<section id="inventorySection" style="display:none;">
+
+<h2 class="section-title">
+📦 在庫一覧
+</h2>
+
+<div class="inventory-tools">
+
+<input
+type="text"
+id="searchInput"
+placeholder="商品を検索..."
+class="search-box"
+>
+
+<select id="rankFilter" class="filter-box">
+<option value="">全ランク</option>
+<option value="S">S</option>
+<option value="SS">SS</option>
+<option value="SSS">SSS</option>
+</select>
+
+</div>
+
+<div id="inventoryGrid" class="inventory-grid">
+
+<div
+class="inventory-card"
+data-rank="SSS"
+data-name="五条完凸アカウント"
+>
+
+<div class="badge">SSS</div>
+
+<h3>五条完凸アカウント</h3>
+
+<p>限定15種所持</p>
+
+<div class="price">
+¥7,980
+</div>
+
+<button onclick="openModal()">
+詳細を見る
+</button>
+
+</div>
+
+<div
+class="inventory-card"
+data-rank="SS"
+data-name="超フェス多数"
+>
+
+<div class="badge">SS</div>
+
+<h3>超フェス多数</h3>
+
+<p>ニカルフィ所持</p>
+
+<div class="price">
+¥4,980
+</div>
+
+<button onclick="openModal()">
+詳細を見る
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- MODAL -->
+
+<div id="itemModal" class="modal">
+
+<div class="modal-content">
+
+<span
+class="close"
+onclick="closeModal()"
+>
+×
+</span>
+
+<h2>
+SSSランク
+</h2>
+
+<p>
+石 3500個
+</p>
+
+<p>
+限定キャラ15種
+</p>
+
+<p>
+完凸キャラ5体
+</p>
+
+<div class="price-large">
+¥7,980
+</div>
+
+<a
+href="#"
+class="buy-btn"
+>
+購入する
+</a>
+
+</div>
+
+</div>
 </footer>
 
 <script>
@@ -340,6 +639,104 @@ p.style.animationDuration=
 p.style.opacity=Math.random();
 
 document.body.appendChild(p);
+
+}
+
+// ゲーム押したら在庫表示
+
+document
+.querySelectorAll(".game-card")
+.forEach(card=>{
+
+card.onclick=()=>{
+
+document
+.getElementById("inventorySection")
+.style.display="block";
+
+window.scrollTo({
+top:
+document.getElementById(
+"inventorySection"
+).offsetTop,
+behavior:"smooth"
+});
+
+};
+
+});
+
+// 検索
+
+const searchInput=
+document.getElementById("searchInput");
+
+searchInput.addEventListener("input",()=>{
+
+let value=
+searchInput.value.toLowerCase();
+
+document
+.querySelectorAll(".inventory-card")
+.forEach(card=>{
+
+let name=
+card.dataset.name.toLowerCase();
+
+card.style.display=
+name.includes(value)
+?"block"
+:"none";
+
+});
+
+});
+
+// ランク絞り込み
+
+document
+.getElementById("rankFilter")
+.addEventListener("change",e=>{
+
+let rank=e.target.value;
+
+document
+.querySelectorAll(".inventory-card")
+.forEach(card=>{
+
+if(
+rank===""
+||
+card.dataset.rank===rank
+){
+
+card.style.display="block";
+
+}else{
+
+card.style.display="none";
+
+}
+
+});
+
+});
+
+// モーダル
+
+function openModal(){
+
+document
+.getElementById("itemModal")
+.style.display="flex";
+
+}
+
+function closeModal(){
+
+document
+.getElementById("itemModal")
+.style.display="none";
 
 }
 
