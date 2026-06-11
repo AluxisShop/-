@@ -394,6 +394,20 @@ text-decoration:none;
 font-weight:bold;
 }
 
+.item-image{
+
+width:100%;
+
+height:180px;
+
+object-fit:cover;
+
+border-radius:15px;
+
+margin-bottom:15px;
+
+}
+
 </style>
 </head>
 
@@ -499,9 +513,6 @@ Premium Account Marketplace
 
 </div>
 
-<footer>
-© HNKG MARKET
-
 <!-- INVENTORY -->
 
 <section id="inventorySection" style="display:none;">
@@ -529,50 +540,6 @@ class="search-box"
 </div>
 
 <div id="inventoryGrid" class="inventory-grid">
-
-<div
-class="inventory-card"
-data-rank="SSS"
-data-name="五条完凸アカウント"
->
-
-<div class="badge">SSS</div>
-
-<h3>五条完凸アカウント</h3>
-
-<p>限定15種所持</p>
-
-<div class="price">
-¥7,980
-</div>
-
-<button onclick="openModal()">
-詳細を見る
-</button>
-
-</div>
-
-<div
-class="inventory-card"
-data-rank="SS"
-data-name="超フェス多数"
->
-
-<div class="badge">SS</div>
-
-<h3>超フェス多数</h3>
-
-<p>ニカルフィ所持</p>
-
-<div class="price">
-¥4,980
-</div>
-
-<button onclick="openModal()">
-詳細を見る
-</button>
-
-</div>
 
 </div>
 
@@ -621,9 +588,41 @@ class="buy-btn"
 </div>
 
 </div>
+
+<footer>
+© HNKG MARKET
 </footer>
 
 <script>
+const inventory = [
+
+{
+id:1,
+game:"ファンパレ",
+rank:"SSS",
+name:"五条完凸",
+price:"7980",
+stone:"3500",
+limited:"15",
+views:4,
+status:"販売中",
+image:"https://picsum.photos/400/250?1"
+},
+
+{
+id:2,
+game:"バウンティ",
+rank:"SS",
+name:"ニカルフィ所持",
+price:"4980",
+stone:"2200",
+limited:"8",
+views:2,
+status:"販売中",
+image:"https://picsum.photos/400/250?2"
+}
+
+];
 
 for(let i=0;i<40;i++){
 
@@ -724,11 +723,27 @@ card.style.display="none";
 
 // モーダル
 
-function openModal(){
+function openModal(id){
 
-document
-.getElementById("itemModal")
-.style.display="flex";
+const item =
+inventory.find(
+i => i.id === id
+);
+
+document.querySelector(
+"#itemModal h2"
+).innerText =
+item.rank + "ランク";
+
+document.querySelector(
+"#itemModal .price-large"
+).innerText =
+"¥" + item.price;
+
+document.getElementById(
+"itemModal"
+).style.display =
+"flex";
 
 }
 
@@ -739,6 +754,85 @@ document
 .style.display="none";
 
 }
+
+function renderInventory(){
+
+const grid =
+document.getElementById(
+"inventoryGrid"
+);
+
+grid.innerHTML="";
+
+inventory.forEach(item=>{
+
+grid.innerHTML += `
+
+<div class="inventory-card">
+
+<img
+src="${item.image}"
+class="item-image"
+>
+
+<div class="badge">
+${item.rank}
+</div>
+
+<h3>${item.name}</h3>
+
+<p>${item.game}</p>
+
+<div class="status">
+● ${item.status}
+</div>
+
+<div class="viewer">
+
+👁 ${item.views}人閲覧中
+
+</div>
+
+<div class="price">
+
+¥${item.price}
+
+</div>
+
+<button onclick="openModal(${item.id})">
+
+詳細を見る
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+renderInventory();
+
+document.querySelector(
+".stats"
+).innerHTML = `
+<div class="stat">
+<h2>${inventory.length}</h2>
+<p>総在庫</p>
+</div>
+
+<div class="stat">
+<h2>4892</h2>
+<p>販売実績</p>
+</div>
+
+<div class="stat">
+<h2>3分</h2>
+<p>平均対応</p>
+</div>
+`;
 
 </script>
 
