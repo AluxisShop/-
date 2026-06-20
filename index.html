@@ -1,109 +1,155 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>HNKG MARKET</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-body{background:#050505;color:#fff}
-body:before{
-content:"";position:fixed;inset:0;
-background:
-radial-gradient(circle at top left,rgba(0,180,255,.05),transparent 35%),
-radial-gradient(circle at bottom right,rgba(255,0,140,.04),transparent 35%);
-pointer-events:none;z-index:-1}
-.container{max-width:1200px;margin:auto;padding:20px}
-header{text-align:center;padding:50px 0 30px}
-.logo{font-size:2.6rem;font-weight:800;letter-spacing:2px}
-.market{color:#00d8ff}
-.sub{opacity:.5;letter-spacing:3px;font-size:.75rem;margin-top:10px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:30px 0}
-.stat,.game,.card{background:#0d0d0d;border:1px solid #1f1f1f;border-radius:24px}
-.stat{padding:20px;text-align:center}
-.stat h2{font-size:2rem}
-h2.title{text-align:center;margin:40px 0 20px}
-.games{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
-.game{padding:22px;font-size:1.1rem;cursor:pointer;transition:.25s}
-.game:hover{transform:translateY(-3px);border-color:#333}
-.tools{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:25px 0}
-input,select{background:#111;color:#fff;border:1px solid #222;padding:14px;border-radius:14px;min-width:220px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.card{overflow:hidden}
-.img{height:190px;background:#151515;display:flex;align-items:center;justify-content:center;color:#666}
-.content{padding:18px}
-.pick{color:#f5c542;font-weight:700}
-.badge{display:inline-block;background:#fff;color:#000;padding:5px 10px;border-radius:999px;margin:8px 0;font-weight:700}
-.price{font-size:1.7rem;font-weight:800;margin:10px 0}
-.stock{color:#ff8d8d}
-.btn{width:100%;padding:14px;border:none;border-radius:12px;background:#fff;color:#000;font-weight:700}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:20px}
-.modalbox{background:#0d0d0d;border:1px solid #222;border-radius:24px;padding:25px;max-width:500px;width:100%}
-.buy{display:block;text-align:center;background:#fff;color:#000;padding:14px;border-radius:12px;text-decoration:none;margin-top:15px;font-weight:700}
-footer{text-align:center;opacity:.4;padding:40px}
-@media(max-width:700px){
-.stats{grid-template-columns:1fr}
-.games{grid-template-columns:1fr 1fr}
-.logo{font-size:2rem}
-}
-</style>
-</head>
-<body>
-<div class="container">
-<header>
-<div class="logo">HNKG <span class="market">MARKET</span></div>
-<div class="sub">PREMIUM ACCOUNT MARKETPLACE</div>
-</header>
-
-<div class="stats">
-<div class="stat"><h2>128</h2><p>総在庫</p></div>
-<div class="stat"><h2>4892</h2><p>販売実績</p></div>
-<div class="stat"><h2>3分</h2><p>平均対応</p></div>
-</div>
-
-<h2 class="title">🎮 ゲームを選択</h2>
-<div class="games">
-<div class="game">⚔️ ファンパレ</div>
-<div class="game">🏴‍☠️ バウンティ</div>
-<div class="game">🧸 ツムツム</div>
-<div class="game">🎲 すべて表示</div>
-</div>
-
-<h2 class="title">📦 在庫一覧</h2>
-
-<div class="tools">
-<input placeholder="商品検索">
-<select><option>全ランク</option><option>S</option><option>SS</option><option>SSS</option></select>
-</div>
-
-<div class="grid">
-<div class="card">
-<div class="img">商品画像を配置</div>
-<div class="content">
-<div class="pick">🏆 PICK UP</div>
-<div class="badge">SSS</div>
-<h3>五条完凸アカウント</h3>
-<p>ファンパレ</p>
-<div class="stock">🔥 残り1件</div>
-<div class="price">¥7,980</div>
-<button class="btn">詳細を見る</button>
-</div>
-</div>
-
-<div class="card">
-<div class="img">商品画像を配置</div>
-<div class="content">
-<div class="badge">SS</div>
-<h3>ニカルフィ所持</h3>
-<p>バウンティ</p>
-<div class="stock">🔥 残り2件</div>
-<div class="price">¥4,980</div>
-<button class="btn">詳細を見る</button>
-</div>
-</div>
-</div>
-
-<footer>© HNKG MARKET</footer>
-</div>
-</body>
-</html>
+diff --git a/index.html b/index.html
+index 45c59b4ef65dbdf37f659fcd35e0d76a78b5f705..12b93a3c28957f9d22c3402160b12a7a56c30993 100644
+--- a/index.html
++++ b/index.html
+@@ -1,109 +1,60 @@
+ <!DOCTYPE html>
+ <html lang="ja">
+ <head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1.0">
+-<title>HNKG MARKET</title>
++<title>HNKG STOCK | 在庫管理</title>
+ <style>
+-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+-body{background:#050505;color:#fff}
+-body:before{
+-content:"";position:fixed;inset:0;
+-background:
+-radial-gradient(circle at top left,rgba(0,180,255,.05),transparent 35%),
+-radial-gradient(circle at bottom right,rgba(255,0,140,.04),transparent 35%);
+-pointer-events:none;z-index:-1}
+-.container{max-width:1200px;margin:auto;padding:20px}
+-header{text-align:center;padding:50px 0 30px}
+-.logo{font-size:2.6rem;font-weight:800;letter-spacing:2px}
+-.market{color:#00d8ff}
+-.sub{opacity:.5;letter-spacing:3px;font-size:.75rem;margin-top:10px}
+-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:30px 0}
+-.stat,.game,.card{background:#0d0d0d;border:1px solid #1f1f1f;border-radius:24px}
+-.stat{padding:20px;text-align:center}
+-.stat h2{font-size:2rem}
+-h2.title{text-align:center;margin:40px 0 20px}
+-.games{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+-.game{padding:22px;font-size:1.1rem;cursor:pointer;transition:.25s}
+-.game:hover{transform:translateY(-3px);border-color:#333}
+-.tools{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:25px 0}
+-input,select{background:#111;color:#fff;border:1px solid #222;padding:14px;border-radius:14px;min-width:220px}
+-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+-.card{overflow:hidden}
+-.img{height:190px;background:#151515;display:flex;align-items:center;justify-content:center;color:#666}
+-.content{padding:18px}
+-.pick{color:#f5c542;font-weight:700}
+-.badge{display:inline-block;background:#fff;color:#000;padding:5px 10px;border-radius:999px;margin:8px 0;font-weight:700}
+-.price{font-size:1.7rem;font-weight:800;margin:10px 0}
+-.stock{color:#ff8d8d}
+-.btn{width:100%;padding:14px;border:none;border-radius:12px;background:#fff;color:#000;font-weight:700}
+-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:20px}
+-.modalbox{background:#0d0d0d;border:1px solid #222;border-radius:24px;padding:25px;max-width:500px;width:100%}
+-.buy{display:block;text-align:center;background:#fff;color:#000;padding:14px;border-radius:12px;text-decoration:none;margin-top:15px;font-weight:700}
+-footer{text-align:center;opacity:.4;padding:40px}
+-@media(max-width:700px){
+-.stats{grid-template-columns:1fr}
+-.games{grid-template-columns:1fr 1fr}
+-.logo{font-size:2rem}
+-}
++:root{color-scheme:dark;--bg:#07090f;--panel:#10141f;--panel2:#151b29;--line:#263043;--text:#f7fbff;--muted:#91a0b8;--accent:#38bdf8;--ok:#34d399;--warn:#f59e0b;--danger:#fb7185}
++*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(56,189,248,.16),transparent 34%),radial-gradient(circle at bottom right,rgba(52,211,153,.12),transparent 28%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.container{max-width:1180px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:22px 0}.logo{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:.04em}.logo span{color:var(--accent)}.sub{color:var(--muted);margin-top:6px}.nav{display:flex;gap:10px;flex-wrap:wrap}.nav a,.ghost{color:var(--text);text-decoration:none;border:1px solid var(--line);background:rgba(255,255,255,.04);padding:10px 14px;border-radius:999px}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:stretch}.panel{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.hero h1{font-size:clamp(2rem,5vw,4rem);line-height:1.05;margin:0 0 14px}.hero p{color:var(--muted);line-height:1.8}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}.stat{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px}.stat strong{font-size:2rem;display:block}.stat span{color:var(--muted);font-size:.9rem}.toolbar{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;margin:22px 0}input,select,button,textarea{font:inherit}input,select,textarea{width:100%;border:1px solid var(--line);background:#0b1019;color:var(--text);border-radius:14px;padding:13px}button{border:0;border-radius:14px;padding:13px 16px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(135deg,var(--accent),#60a5fa);color:#04111f}.success{background:linear-gradient(135deg,var(--ok),#86efac);color:#03170e}.danger{background:rgba(251,113,133,.14);color:#fecdd3;border:1px solid rgba(251,113,133,.35)}.grid{display:grid;grid-template-columns:1fr 360px;gap:18px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:760px}th,td{padding:14px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:.84rem}tbody tr:hover{background:rgba(255,255,255,.03)}.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:.82rem;font-weight:800}.ok{background:rgba(52,211,153,.15);color:#a7f3d0}.low{background:rgba(245,158,11,.15);color:#fde68a}.out{background:rgba(251,113,133,.15);color:#fecdd3}.rank{background:#fff;color:#020617}.actions{display:flex;gap:8px}.mini{padding:8px 10px;border-radius:10px}.form{display:grid;gap:10px;position:sticky;top:16px}.form h2,.panel h2{margin:0 0 8px}.empty{text-align:center;color:var(--muted);padding:30px}.toast{position:fixed;right:18px;bottom:18px;background:#ecfeff;color:#083344;padding:14px 18px;border-radius:14px;font-weight:800;display:none}.toast.show{display:block}@media(max-width:900px){header,.hero{grid-template-columns:1fr;display:grid}.stats{grid-template-columns:repeat(2,1fr)}.toolbar,.grid{grid-template-columns:1fr}.form{position:static}}@media(max-width:520px){.stats{grid-template-columns:1fr}.container{padding:16px}}
+ </style>
+ </head>
+ <body>
+ <div class="container">
+ <header>
+-<div class="logo">HNKG <span class="market">MARKET</span></div>
+-<div class="sub">PREMIUM ACCOUNT MARKETPLACE</div>
++  <div><div class="logo">HNKG <span>STOCK</span></div><div class="sub">ゲームアカウント向け在庫管理ダッシュボード</div></div>
++  <nav class="nav"><a href="shop.html">販売ページ</a><button class="ghost" id="seedBtn">サンプル復元</button></nav>
+ </header>
+ 
+-<div class="stats">
+-<div class="stat"><h2>128</h2><p>総在庫</p></div>
+-<div class="stat"><h2>4892</h2><p>販売実績</p></div>
+-<div class="stat"><h2>3分</h2><p>平均対応</p></div>
+-</div>
+-
+-<h2 class="title">🎮 ゲームを選択</h2>
+-<div class="games">
+-<div class="game">⚔️ ファンパレ</div>
+-<div class="game">🏴‍☠️ バウンティ</div>
+-<div class="game">🧸 ツムツム</div>
+-<div class="game">🎲 すべて表示</div>
+-</div>
++<section class="hero">
++  <div class="panel"><h1>在庫・価格・公開状態を1画面で管理</h1><p>商品を登録するとブラウザのローカルストレージに保存され、販売ページにも即時反映されます。検索、カテゴリ絞り込み、低在庫アラート、CSV出力まで対応した軽量な管理サイトです。</p></div>
++  <div class="panel"><h2>運用メモ</h2><p>在庫が2件以下の商品は自動で「低在庫」と表示します。売り切れ商品は販売ページで購入ボタンが無効化されます。</p><button class="success" id="exportBtn">CSVを書き出す</button></div>
++</section>
+ 
+-<h2 class="title">📦 在庫一覧</h2>
++<section class="stats" aria-label="在庫サマリー">
++  <div class="stat"><strong id="totalItems">0</strong><span>登録商品</span></div>
++  <div class="stat"><strong id="totalStock">0</strong><span>総在庫</span></div>
++  <div class="stat"><strong id="lowStock">0</strong><span>低在庫</span></div>
++  <div class="stat"><strong id="stockValue">¥0</strong><span>在庫評価額</span></div>
++</section>
+ 
+-<div class="tools">
+-<input placeholder="商品検索">
+-<select><option>全ランク</option><option>S</option><option>SS</option><option>SSS</option></select>
+-</div>
+-
+-<div class="grid">
+-<div class="card">
+-<div class="img">商品画像を配置</div>
+-<div class="content">
+-<div class="pick">🏆 PICK UP</div>
+-<div class="badge">SSS</div>
+-<h3>五条完凸アカウント</h3>
+-<p>ファンパレ</p>
+-<div class="stock">🔥 残り1件</div>
+-<div class="price">¥7,980</div>
+-<button class="btn">詳細を見る</button>
+-</div>
++<div class="toolbar">
++  <input id="search" placeholder="商品名・ゲーム名で検索">
++  <select id="categoryFilter"><option value="all">全カテゴリ</option></select>
++  <select id="statusFilter"><option value="all">全ステータス</option><option value="販売中">販売中</option><option value="非公開">非公開</option><option value="売り切れ">売り切れ</option></select>
++  <button class="primary" id="clearBtn">条件クリア</button>
+ </div>
+ 
+-<div class="card">
+-<div class="img">商品画像を配置</div>
+-<div class="content">
+-<div class="badge">SS</div>
+-<h3>ニカルフィ所持</h3>
+-<p>バウンティ</p>
+-<div class="stock">🔥 残り2件</div>
+-<div class="price">¥4,980</div>
+-<button class="btn">詳細を見る</button>
+-</div>
+-</div>
+-</div>
+-
+-<footer>© HNKG MARKET</footer>
+-</div>
++<main class="grid">
++  <section class="panel tablewrap"><h2>在庫一覧</h2><table><thead><tr><th>商品</th><th>カテゴリ</th><th>ランク</th><th>価格</th><th>在庫</th><th>状態</th><th>操作</th></tr></thead><tbody id="inventoryBody"></tbody></table><div id="empty" class="empty">商品がありません。右のフォームから登録してください。</div></section>
++  <aside class="panel"><form class="form" id="itemForm"><h2 id="formTitle">商品登録</h2><input type="hidden" id="itemId"><input id="name" required placeholder="商品名"><input id="game" required placeholder="カテゴリ / ゲーム名"><select id="rank"><option>S</option><option>SS</option><option>SSS</option><option>限定</option></select><input id="price" required type="number" min="0" placeholder="価格"><input id="stock" required type="number" min="0" placeholder="在庫数"><select id="status"><option>販売中</option><option>非公開</option><option>売り切れ</option></select><textarea id="memo" rows="3" placeholder="管理メモ"></textarea><button class="primary" type="submit">保存する</button><button class="ghost" type="button" id="resetBtn">新規入力に戻す</button></form></aside>
++</main>
++</div><div id="toast" class="toast"></div>
++<script>
++const STORAGE_KEY="hnkg_inventory";
++const sample=[{id:crypto.randomUUID(),name:"五条完凸アカウント",game:"ファンパレ",rank:"SSS",price:7980,stock:1,status:"販売中",memo:"PICK UP"},{id:crypto.randomUUID(),name:"ニカルフィ所持",game:"バウンティ",rank:"SS",price:4980,stock:2,status:"販売中",memo:"即納可"},{id:crypto.randomUUID(),name:"コイン大量アカウント",game:"ツムツム",rank:"S",price:2980,stock:0,status:"売り切れ",memo:"補充待ち"}];
++let items=load();
++const $=id=>document.getElementById(id);const yen=n=>Number(n||0).toLocaleString("ja-JP",{style:"currency",currency:"JPY",maximumFractionDigits:0});
++function load(){const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");if(saved&&saved.length)return saved;localStorage.setItem(STORAGE_KEY,JSON.stringify(sample));return sample}
++function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(items));localStorage.setItem("db",JSON.stringify(items));}
++function toast(msg){$("toast").textContent=msg;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1800)}
++function statusClass(i){if(i.stock<=0)return"out";if(i.stock<=2)return"low";return"ok"}
++function render(){save();const q=$("search").value.toLowerCase();const cf=$("categoryFilter").value;const sf=$("statusFilter").value;const categories=[...new Set(items.map(i=>i.game))];$("categoryFilter").innerHTML='<option value="all">全カテゴリ</option>'+categories.map(c=>`<option ${cf===c?"selected":""}>${c}</option>`).join("");const filtered=items.filter(i=>(cf==="all"||i.game===cf)&&(sf==="all"||i.status===sf)&&(`${i.name} ${i.game}`.toLowerCase().includes(q)));$("inventoryBody").innerHTML=filtered.map(i=>`<tr><td><strong>${i.name}</strong><br><small>${i.memo||"メモなし"}</small></td><td>${i.game}</td><td><span class="pill rank">${i.rank}</span></td><td>${yen(i.price)}</td><td>${i.stock}</td><td><span class="pill ${statusClass(i)}">${i.stock<=0?"売り切れ":i.stock<=2?"低在庫":i.status}</span></td><td class="actions"><button class="mini primary" onclick="editItem('${i.id}')">編集</button><button class="mini danger" onclick="deleteItem('${i.id}')">削除</button></td></tr>`).join("");$("empty").style.display=filtered.length?"none":"block";$("totalItems").textContent=items.length;$("totalStock").textContent=items.reduce((s,i)=>s+Number(i.stock),0);$("lowStock").textContent=items.filter(i=>i.stock>0&&i.stock<=2).length;$("stockValue").textContent=yen(items.reduce((s,i)=>s+Number(i.price)*Number(i.stock),0));}
++function editItem(id){const i=items.find(x=>x.id===id);["itemId","name","game","rank","price","stock","status","memo"].forEach(k=>$(k).value=k==="itemId"?i.id:i[k]);$("formTitle").textContent="商品編集";scrollTo({top:0,behavior:"smooth"})}
++function deleteItem(id){if(confirm("この商品を削除しますか？")){items=items.filter(i=>i.id!==id);render();toast("削除しました")}}
++function resetForm(){itemForm.reset();$("itemId").value="";$("formTitle").textContent="商品登録"}
++itemForm.addEventListener("submit",e=>{e.preventDefault();const item={id:$("itemId").value||crypto.randomUUID(),name:$("name").value,game:$("game").value,rank:$("rank").value,price:Number($("price").value),stock:Number($("stock").value),status:$("stock").value==="0"?"売り切れ":$("status").value,memo:$("memo").value};items=$("itemId").value?items.map(i=>i.id===item.id?item:i):[item,...items];resetForm();render();toast("保存しました")});
++["search","categoryFilter","statusFilter"].forEach(id=>$(id).addEventListener("input",render));$("clearBtn").onclick=()=>{search.value="";categoryFilter.value="all";statusFilter.value="all";render()};$("resetBtn").onclick=resetForm;$("seedBtn").onclick=()=>{items=sample.map(i=>({...i,id:crypto.randomUUID()}));render();toast("サンプルを復元しました")};$("exportBtn").onclick=()=>{const rows=[["商品名","カテゴリ","ランク","価格","在庫","状態","メモ"],...items.map(i=>[i.name,i.game,i.rank,i.price,i.stock,i.status,i.memo])];const csv=rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="inventory.csv";a.click()};render();
++</script>
+ </body>
+ </html>
